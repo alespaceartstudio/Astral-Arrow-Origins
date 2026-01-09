@@ -29,7 +29,7 @@ h1, h2, h3, h4, h5, h6, button, .sci-fi-font {
 
 /* --- 2. TÍTULO PRINCIPAL (O Degradê que faltava) --- */
 /* Classe chamada no App.jsx: "scifi-title-gradient" */
-.scifi-title-gradient {
+#scifi-title-gradient {
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;

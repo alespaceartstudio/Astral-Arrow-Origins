@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Play, Share2, Youtube, Instagram, Mail, ChevronDown, Star, Check } from 'lucide-react'; 
+import logoImage from "/assets/logo.jpg";
 
 const App = () => {
   const [activeTab, setActiveTab] = useState('home');
@@ -41,8 +42,13 @@ const App = () => {
           <div className="flex items-center justify-between h-20">
             <div className="flex items-center gap-4 cursor-pointer group" onClick={() => setActiveTab('home')}>
               <div className="relative">
-                <div className="w-16 h-16 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-lg flex items-center justify-center border-2 border-yellow-400/30 shadow-lg shadow-yellow-500/20 group-hover:scale-105 transition-transform">
-                  <span className="text-black font-black text-xl sci-fi-font">ALE</span>
+                {/* Adicionamos overflow-hidden para a imagem respeitar o rounded-lg */}
+                <div className="w-16 h-16 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-lg flex items-center justify-center border-2 border-yellow-400/30 shadow-lg shadow-yellow-500/20 group-hover:scale-105 transition-transform overflow-hidden">
+                  <img 
+                    src={logoImage} 
+                    alt="Alespace Logo" 
+                    className="w-full h-full object-cover" 
+                  />
                 </div>
               </div>
 
@@ -90,7 +96,7 @@ const App = () => {
         </div>
         
         <div className="relative z-10 text-center px-4 max-w-5xl mx-auto mt-[-50px]">
-          <h1 className="text-6xl md:text-8xl font-black text-white mb-8 tracking-tighter drop-shadow-2xl">
+          <h1 id="scifi-title-gradient" className="text-6xl md:text-8xl font-black text-white mb-8 tracking-tighter drop-shadow-2xl">
             ASTRAL ARROW
           </h1>
 
