@@ -1,10 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { Play, Share2, Youtube, Instagram, Mail, ChevronDown, Star, Check } from 'lucide-react'; 
-import logoImage from "/assets/logo.jpg";
+import { Play, Share2, Youtube, Instagram, Mail, ChevronDown, Monitor, Cpu, Star, Check } from 'lucide-react';
+
+/* --- SUA LÓGICA DE IMPORTAÇÃO --- */
+// Tentamos importar. Se o ficheiro existir e o build passar, localLogo terá o caminho.
+// Se o build falhar aqui, o erro será no terminal, não na lógica do React.
+import localLogo from './assets/logo.png';
+
+// Link de reserva para o caso de falha
+const FALLBACK_LOGO = "https://drive.google.com/uc?export=view&id=1UthNABq7SFECJThMV3VDzieMmwULv6Yi";
 
 const App = () => {
   const [activeTab, setActiveTab] = useState('home');
   const [scrolled, setScrolled] = useState(false);
+  
+  // LÓGICA CONDICIONAL (IF/ELSE):
+  // Verifica se localLogo foi carregado corretamente pelo import.
+  // Se 'localLogo' for undefined ou null, usa o FALLBACK_LOGO.
+  const logoSource = localLogo ? localLogo : FALLBACK_LOGO;
+
+  const [currentLogo, setCurrentLogo] = useState(logoSource);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -14,6 +28,14 @@ const App = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Segurança extra: Se o caminho existir mas a imagem estiver corrompida (erro 404)
+  const handleImageError = () => {
+    if (currentLogo !== FALLBACK_LOGO) {
+      console.warn("Imagem local falhou ao renderizar. Ativando fallback.");
+      setCurrentLogo(FALLBACK_LOGO);
+    }
+  };
+
   const episodes = [
     {
       id: 1,
@@ -21,7 +43,7 @@ const App = () => {
       desc: "Quando um sinal antigo muda tudo. O início da jornada de Aira & Sylva.",
       tags: ["#SciFi", "#Blender", "#AI"],
       views: "Estreia",
-      thumbnail: "bg-gradient-to-br from-blue-900 to-slate-900"
+      thumbnail: "bg-gradient-to-br from-blue-900 to-slate-900" 
     },
     {
       id: 2,
@@ -33,44 +55,70 @@ const App = () => {
     }
   ];
 
+  // ESTILO DO LOGO (Nuclear Option - Tamanho Travado)
+  const logoWrapperStyle = {
+    width: '48px',
+    height: '48px',
+    minWidth: '48px',
+    borderRadius: '8px',
+    overflow: 'hidden',
+    position: 'relative',
+    border: '1px solid rgba(255,255,255,0.1)'
+  };
+
+  const logoImgStyle = {
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
+    display: 'block'
+  };
+
   return (
     <div className="min-h-screen bg-slate-950 text-slate-200 selection:bg-cyan-500 selection:text-black">
       
       {/* --- NAVBAR --- */}
       <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-slate-950/90 backdrop-blur-md border-b border-white/10' : 'bg-transparent'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20">
-            <div className="flex items-center gap-4 cursor-pointer group" onClick={() => setActiveTab('home')}>
-              <div className="relative">
-                {/* Adicionamos overflow-hidden para a imagem respeitar o rounded-lg */}
-                <div className="w-16 h-16 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-lg flex items-center justify-center border-2 border-yellow-400/30 shadow-lg shadow-yellow-500/20 group-hover:scale-105 transition-transform overflow-hidden">
-                  <img 
-                    src={logoImage} 
-                    alt="Alespace Logo" 
-                    className="w-full h-full object-cover" 
-                  />
-                </div>
+          <div className="flex items-center justify-between h-20"> {/* Altura ajustada para h-20 para dar espaço */}
+            <div className="flex items-center gap-3 cursor-pointer group" onClick={() => setActiveTab('home')}>
+              
+              {/* LOGO NO TOPO */}
+              <div style={logoWrapperStyle} className="shadow-lg shadow-cyan-500/20 group-hover:scale-105 transition-transform bg-black/40">
+                 <div className="absolute inset-0 bg-gradient-to-tr from-cyan-900 to-blue-900 flex items-center justify-center -z-10">
+                    <Star className="text-yellow-400 w-6 h-6 fill-current opacity-50" />
+                 </div>
+                 
+                 <img 
+                   src={currentLogo} 
+                   alt="Alespace Logo" 
+                   style={logoImgStyle}
+                   onError={handleImageError} // O segredo está aqui também
+                 />
               </div>
-
-              <div className="flex flex-col">
-                <div className="relative mb-1">
-                  <svg className="h-5 w-auto" viewBox="0 0 400 30" fill="none">
-                    <path d="M 10 15 Q 200 5, 390 15" stroke="#fbbf24" strokeWidth="1.5" fill="none" opacity="0.6"/>
-                    <text x="50" y="20" fill="#fbbf24" fontSize="10" fontWeight="bold" letterSpacing="3" className="sci-fi-font">
-                      ESTÚDIO INDEPENDENTE • BLENDER & AI
-                    </text>
-                  </svg>
-                </div>
-                <span className="text-2xl font-bold tracking-wider text-white sci-fi-font">
-                  ALE<span className="text-cyan-400">SPACE</span>
-                </span>
+              
+              <span className="text-xl font-bold tracking-wider text-white sci-fi-font">
+                ALE<span className="text-cyan-400">SPACE</span>
+              </span>
+            </div>
+            
+            <div className="hidden md:block">
+              <div className="ml-10 flex items-baseline space-x-8">
+                {['Home', 'Série', 'Sobre', 'Contato'].map((item) => (
+                  <button
+                    key={item}
+                    onClick={() => setActiveTab(item.toLowerCase().split(' ')[0])}
+                    className="nav-link"
+                  >
+                    {item}
+                  </button>
+                ))}
               </div>
             </div>
 
-            <div className="flex flex-col items-end gap-1.5 cursor-pointer group">
-              <div className="w-8 h-0.5 bg-cyan-500 transition-all group-hover:w-10"></div>
-              <div className="w-6 h-0.5 bg-yellow-500 transition-all group-hover:w-8"></div>
-              <div className="w-4 h-0.5 bg-white transition-all group-hover:w-6"></div>
+            <div className="md:hidden flex flex-col items-end gap-1 cursor-pointer">
+              <div className="w-8 h-0.5 bg-cyan-500"></div>
+              <div className="w-6 h-0.5 bg-yellow-500"></div>
+              <div className="w-4 h-0.5 bg-white"></div>
             </div>
           </div>
         </div>
@@ -96,14 +144,23 @@ const App = () => {
         </div>
         
         <div className="relative z-10 text-center px-4 max-w-5xl mx-auto mt-[-50px]">
-          <h1 id="scifi-title-gradient" className="text-6xl md:text-8xl font-black text-white mb-8 tracking-tighter drop-shadow-2xl">
-            ASTRAL ARROW
+          <div className="inline-block px-4 py-1 mb-6 border border-yellow-500/30 rounded-full bg-yellow-500/5 backdrop-blur-sm animate-fade-in-up">
+            <span className="text-yellow-400 text-xs font-bold tracking-[0.3em] uppercase">Estúdio Independente • Blender & AI</span>
+          </div>
+          
+          <h1 className="text-5xl md:text-7xl font-extrabold text-white mb-6 tracking-tighter drop-shadow-2xl">
+            {/* Título com ID para garantir o degradê */}
+            <span id="scifi-title-gradient">
+              ASTRAL ARROW
+            </span>
           </h1>
-
-          <p className="text-xl md:text-2xl text-slate-300 mb-10 max-w-3xl mx-auto leading-relaxed font-light">
-            Uma saga sci-fi original explorando mistérios cósmicos e tecnologia ancestral. Produzida por <span className="text-yellow-400 font-semibold tracking-wide">Alespace Art Studio</span>.
+          
+          <p className="text-lg md:text-xl text-slate-400 mb-8 max-w-2xl mx-auto leading-relaxed font-light">
+            Uma saga sci-fi original explorando mistérios cósmicos e tecnologia ancestral. 
+            <br className="hidden md:block" />
+            Produzida por <span className="text-yellow-400 font-medium tracking-wide">Alespace Art Studio</span>.
           </p>
-
+          
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
             <button className="btn-hero-primary group">
               <span className="flex items-center gap-3">
@@ -178,13 +235,18 @@ const App = () => {
       <footer className="bg-black py-12 border-t border-white/10">
         <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-lg flex items-center justify-center border border-yellow-400/30 shadow-lg shadow-yellow-500/20 opacity-80 hover:opacity-100 transition-opacity">
-              <span className="text-black font-black text-sm sci-fi-font">ALE</span>
-            </div>
-            <div className="text-center md:text-left">
-              <h3 className="text-lg font-bold text-white tracking-widest sci-fi-font">ALE<span className="text-cyan-500">SPACE</span></h3>
-              <p className="text-slate-600 text-xs mt-1">© 2026 Alespace Art Studio.</p>
-            </div>
+             <div style={logoWrapperStyle} className="opacity-80 hover:opacity-100 transition-opacity bg-black/40">
+                <img 
+                   src={currentLogo} 
+                   alt="Alespace Logo" 
+                   style={logoImgStyle}
+                   onError={handleImageError} 
+                 />
+             </div>
+             <div className="text-center md:text-left">
+                <h3 className="text-lg font-bold text-white tracking-widest sci-fi-font">ALE<span className="text-cyan-500">SPACE</span></h3>
+                <p className="text-slate-600 text-xs mt-1">© 2026 Alespace Art Studio.</p>
+             </div>
           </div>
           <div className="flex gap-6">
             <a href="#" className="text-slate-500 hover:text-red-500 transition-colors transform hover:scale-110"><Youtube className="w-6 h-6" /></a>

@@ -1,15 +1,15 @@
-/*@tailwind base;
-@tailwind components;
-@tailwind utilities;*/
+/* NOTA: O Tailwind está a ser carregado pelo index.html (CDN).
+   Este ficheiro contém apenas os estilos personalizados do Alespace.
+*/
 
 /* --- 1. CONFIGURAÇÕES GLOBAIS --- */
 :root {
   font-family: 'Exo 2', sans-serif;
-  --color-cyan: #06b6d4;
-  --color-cyan-glow: #22d3ee;
-  --color-gold: #fbbf24;
-  --bg-dark: #020617;
-  --bg-card: #0f172a;
+  --color-cyan: #06b6d4;       /* Cyan 600 */
+  --color-cyan-glow: #22d3ee;  /* Cyan 400 */
+  --color-gold: #fbbf24;       /* Amber 400 */
+  --bg-dark: #020617;          /* Slate 950 */
+  --bg-card: #0f172a;          /* Slate 900 */
 }
 
 body, html {
@@ -22,13 +22,12 @@ body, html {
   overflow-x: hidden;
 }
 
-/* Classe chamada no App.jsx: "sci-fi-font" */
+/* Fontes Tecnológicas */
 h1, h2, h3, h4, h5, h6, button, .sci-fi-font {
   font-family: 'Orbitron', sans-serif;
 }
 
-/* --- 2. TÍTULO PRINCIPAL (O Degradê que faltava) --- */
-/* Classe chamada no App.jsx: "scifi-title-gradient" */
+/* --- 2. TÍTULO PRINCIPAL (O Degradê) --- */
 #scifi-title-gradient {
   background-clip: text;
   -webkit-background-clip: text;
@@ -38,7 +37,6 @@ h1, h2, h3, h4, h5, h6, button, .sci-fi-font {
 }
 
 /* --- 3. BOTÕES --- */
-/* Classe chamada no App.jsx: "btn-scifi-primary" */
 .btn-scifi-primary {
   background-color: var(--color-cyan);
   color: white;
@@ -63,7 +61,6 @@ h1, h2, h3, h4, h5, h6, button, .sci-fi-font {
   transform: skewX(-10deg) scale(1.05);
 }
 
-/* Classe chamada no App.jsx: "btn-scifi-outline" */
 .btn-scifi-outline {
   background-color: transparent;
   color: white;
@@ -87,7 +84,6 @@ h1, h2, h3, h4, h5, h6, button, .sci-fi-font {
   box-shadow: 0 0 15px rgba(251, 191, 36, 0.3);
 }
 
-/* Correção interna dos botões */
 .btn-scifi-primary span, .btn-scifi-outline span {
   display: inline-flex;
   align-items: center;
@@ -95,7 +91,7 @@ h1, h2, h3, h4, h5, h6, button, .sci-fi-font {
   transform: skewX(10deg);
 }
 
-/* HERO BUTTONS - Simpler design matching the image */
+/* HERO BUTTONS */
 .btn-hero-primary {
   background: linear-gradient(135deg, rgba(6, 182, 212, 0.15), rgba(6, 182, 212, 0.05));
   color: white;
@@ -145,7 +141,6 @@ h1, h2, h3, h4, h5, h6, button, .sci-fi-font {
 }
 
 /* --- 4. CARDS --- */
-/* Classe chamada no App.jsx: "card-episode" */
 .card-episode {
   background-color: var(--bg-card);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -161,7 +156,6 @@ h1, h2, h3, h4, h5, h6, button, .sci-fi-font {
 }
 
 /* --- 5. NAVEGAÇÃO --- */
-/* Classe chamada no App.jsx: "nav-link" */
 .nav-link {
   padding: 0.5rem 1rem;
   color: #94a3b8;
@@ -180,7 +174,7 @@ h1, h2, h3, h4, h5, h6, button, .sci-fi-font {
   text-shadow: 0 0 8px rgba(34, 211, 238, 0.5);
 }
 
-/* --- 6. EXTRAS (Scrollbar & Animações) --- */
+/* --- 6. EXTRAS --- */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: #020617; }
 ::-webkit-scrollbar-thumb { background: #0891b2; border-radius: 4px; }
@@ -194,6 +188,4 @@ h1, h2, h3, h4, h5, h6, button, .sci-fi-font {
   0% { opacity: 0; transform: translateY(20px); }
   100% { opacity: 1; transform: translateY(0); }
 }
-.animate-fade-in-up { 
-  animation: fade-in-up 0.8s ease-out forwards; 
-}
+.animate-fade-in-up { animation: fade-in-up 0.8s ease-out forwards; }
